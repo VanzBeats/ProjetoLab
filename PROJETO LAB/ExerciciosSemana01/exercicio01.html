@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício 1</title>
+</head>
+<body>
+    <h1>Exercício 1</h1>
+    <script>
+        var dado = prompt("Por favor, informe um dado:");
+        var confirmar = confirm("Você deseja verificar o tipo do dado informado?");
+        
+        if (confirmar) {
+            if (!isNaN(parseFloat(dado)) && isFinite(dado)) {
+                alert("O tipo do dado informado é: Número");
+            } else {
+                alert("O tipo do dado informado é: " + typeof dado);
+            }
+        } else {
+            alert("Obrigado por visitar essa página.");
+        }
+        
+        window.location.href = "../semana01.html";
+    </script>
+</body>
+</html>
