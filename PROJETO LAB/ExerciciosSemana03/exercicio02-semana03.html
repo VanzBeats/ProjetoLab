@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relógio</title>
+</head>
+<body>
+    <h1>Exercício 2 - Relógio</h1>
+
+    <p id="relogio"></p>
+
+    <script>
+        function atualizarRelogio() {
+            var dataAtual = new Date();
+
+            var horas = dataAtual.getHours();
+            var minutos = dataAtual.getMinutes();
+            var segundos = dataAtual.getSeconds();
+
+            horas = horas < 10 ? '0' + horas : horas;
+            minutos = minutos < 10 ? '0' + minutos : minutos;
+            segundos = segundos < 10 ? '0' + segundos : segundos;
+
+            var horarioAtual = horas + ':' + minutos + ':' + segundos;
+
+            document.getElementById('relogio').textContent = horarioAtual;
+
+            setTimeout(atualizarRelogio, 1000);
+        }
+
+        atualizarRelogio();
+    </script>
+</body>
+</html>
