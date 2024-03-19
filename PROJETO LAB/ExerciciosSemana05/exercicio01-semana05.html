@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador de Pessoas</title>
+    <style>
+        #contador {
+            text-align: center;
+        }
+
+        #homens-icon, #mulheres-icon {
+            font-size: 50px;
+        }
+
+        #buttons-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #atualizar-total-button {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="contador">
+        <h1>Contador de Pessoas</h1>
+        <div id="homens-icon">♂️ Homens: 27</div>
+        <div id="buttons-container">
+            <button onclick="atualizarPessoas('homens', 1)">+</button>
+            <button onclick="atualizarPessoas('homens', -1)">-</button>
+        </div>
+        <div id="mulheres-icon">♀️ Mulheres: 23</div>
+        <div id="buttons-container">
+            <button onclick="atualizarPessoas('mulheres', 1)">+</button>
+            <button onclick="atualizarPessoas('mulheres', -1)">-</button>
+        </div>
+        <button id="atualizar-total-button" onclick="atualizarTotal()">Atualizar Total</button>
+    </div>
+
+    <script>
+        var totalPessoas = 50;
+        var homens = 27;
+        var mulheres = 23;
+
+        function atualizarPessoas(sexo, quantidade) {
+            if (sexo === 'homens') {
+                if (homens + quantidade >= 0 && homens + quantidade <= totalPessoas) {
+                    homens += quantidade;
+                    mulheres -= quantidade;
+                }
+            } else {
+                if (mulheres + quantidade >= 0 && mulheres + quantidade <= totalPessoas) {
+                    mulheres += quantidade;
+                    homens -= quantidade;
+                }
+            }
+
+            atualizarIcones();
+        }
+
+        function atualizarIcones() {
+            document.getElementById("homens-icon").textContent = "♂️ Homens: " + homens;
+            document.getElementById("mulheres-icon").textContent = "♀️ Mulheres: " + mulheres;
+        }
+
+        function atualizarTotal() {
+            var novoTotal = parseInt(prompt("Digite o novo número total de pessoas:"));
+            if (!isNaN(novoTotal) && novoTotal >= 0) {
+                totalPessoas = novoTotal;
+                homens = Math.min(homens, totalPessoas);
+                mulheres = totalPessoas - homens;
+                atualizarIcones();
+            } else {
+                alert("Por favor, digite um número válido.");
+            }
+        }
+    </script>
+</body>
+</html>
