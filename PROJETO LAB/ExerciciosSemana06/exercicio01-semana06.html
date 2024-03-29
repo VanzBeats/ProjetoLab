@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Simples</title>
+    <style>
+        body {
+            background-color: white;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        #calculadora {
+            width: 250px;
+            margin: 50px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        .visor {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            background-color: #333;
+            text-align: right;
+            padding: 0 10px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .botoes-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .btn {
+            width: 100%;
+            height: 50px;
+            margin: 1px;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        .btn-numero {
+            background-color: #333;
+            color: white;
+        }
+        .btn-operador {
+            background-color: #ff8c00;
+            color: black;
+        }
+        .btn-outros {
+            background-color: #777;
+            color: black;
+        }
+        .btn-resultado {
+            background-color: #ff8c00;
+            color: black;
+            grid-column: span 2;
+        }
+    </style>
+</head>
+<body>
+    <div id="calculadora">
+        <div class="visor" id="visor"></div>
+        <div class="botoes-container" id="botoes-container"></div>
+    </div>
+
+    <script>
+        var botoes = [
+            'AC', '+/-', '%', '/',
+            '7', '8', '9', '*',
+            '4', '5', '6', '-',
+            '1', '2', '3', '+',
+            '0', '.', '='
+        ];
+
+        var visor = document.getElementById('visor');
+        var botoesContainer = document.getElementById('botoes-container');
+
+        botoes.forEach(function(valor) {
+            var botao = document.createElement('button');
+            botao.textContent = valor;
+            botao.classList.add('btn');
+            if (['+', '-', '*', '/'].includes(valor)) {
+                botao.classList.add('btn-operador');
+            } else if (['AC', '%', '+/-'].includes(valor)) {
+                botao.classList.add('btn-outros');
+            } else if (valor === '=') {
+                botao.classList.add('btn-resultado');
+            } else {
+                botao.classList.add('btn-numero');
+            }
+            botao.addEventListener('click', function() {
+                clicarBotao(valor);
+            });
+            botoesContainer.appendChild(botao);
+        });
+
+        var expressao = '';
+
+        function clicarBotao(valor) {
+            if (valor === '=') {
+                calcularResultado();
+            } else if (valor === 'AC') {
+                expressao = '';
+                atualizarVisor();
+            } else if (valor === '+/-') {
+                inverterSinal();
+            } else {
+                expressao += valor;
+                atualizarVisor();
+            }
+        }
+
+        function calcularResultado() {
+            try {
+                var resultado = eval(expressao);
+                visor.textContent = resultado;
+            } catch (error) {
+                visor.textContent = 'Erro';
+            }
+        }
+
+        function inverterSinal() {
+            var numeros = expressao.split(/[-+*/]/);
+            var ultimoNumero = numeros[numeros.length - 1];
+            if (ultimoNumero.startsWith('-')) {
+                expressao = expressao.slice(0, -ultimoNumero.length) + ultimoNumero.slice(1);
+            } else {
+                expressao += '-';
+            }
+            atualizarVisor();
+        }
+
+        function atualizarVisor() {
+            visor.textContent = expressao;
+        }
+    </script>
+</body>
+</html>
