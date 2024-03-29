@@ -7,10 +7,19 @@
     <style>
         #contador {
             text-align: center;
+            margin-top: 50px;
         }
 
-        #homens-icon, #mulheres-icon {
+        .icon {
             font-size: 50px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
         }
 
         #buttons-container {
@@ -18,66 +27,102 @@
             justify-content: center;
             align-items: center;
             gap: 10px;
+            margin-top: 10px;
         }
 
-        #atualizar-total-button {
-            margin-top: 30px;
+        #reset-button {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div id="contador">
-        <h1>Contador de Pessoas</h1>
-        <div id="homens-icon">♂️ Homens: 27</div>
-        <div id="buttons-container">
-            <button onclick="atualizarPessoas('homens', 1)">+</button>
-            <button onclick="atualizarPessoas('homens', -1)">-</button>
-        </div>
-        <div id="mulheres-icon">♀️ Mulheres: 23</div>
-        <div id="buttons-container">
-            <button onclick="atualizarPessoas('mulheres', 1)">+</button>
-            <button onclick="atualizarPessoas('mulheres', -1)">-</button>
-        </div>
-        <button id="atualizar-total-button" onclick="atualizarTotal()">Atualizar Total</button>
-    </div>
+    <div id="contador"></div>
 
     <script>
-        var totalPessoas = 50;
-        var homens = 27;
-        var mulheres = 23;
+        var totalPessoas = 0;
+        var homens = 0;
+        var mulheres = 0;
+
+        function criarContador() {
+            var contadorDiv = document.getElementById("contador");
+
+            var homensIcon = document.createElement("div");
+            homensIcon.textContent = "♂️ Homens: " + homens;
+            homensIcon.className = "icon";
+
+            var mulheresIcon = document.createElement("div");
+            mulheresIcon.textContent = "♀️ Mulheres: " + mulheres;
+            mulheresIcon.className = "icon";
+
+            var totalIcon = document.createElement("div");
+            totalIcon.textContent = "Total: " + totalPessoas;
+            totalIcon.className = "icon";
+
+            var homemButtonContainer = document.createElement("div");
+            homemButtonContainer.className = "button-container";
+            var homemButtonPlus = criarBotao("+", "homens", 1);
+            var homemButtonMinus = criarBotao("-", "homens", -1);
+            homemButtonContainer.appendChild(homemButtonPlus);
+            homemButtonContainer.appendChild(homemButtonMinus);
+
+            var mulherButtonContainer = document.createElement("div");
+            mulherButtonContainer.className = "button-container";
+            var mulherButtonPlus = criarBotao("+", "mulheres", 1);
+            var mulherButtonMinus = criarBotao("-", "mulheres", -1);
+            mulherButtonContainer.appendChild(mulherButtonPlus);
+            mulherButtonContainer.appendChild(mulherButtonMinus);
+
+            var resetButton = document.createElement("button");
+            resetButton.textContent = "Zerar";
+            resetButton.id = "reset-button";
+            resetButton.onclick = resetarContador;
+
+            contadorDiv.appendChild(homensIcon);
+            contadorDiv.appendChild(homemButtonContainer);
+            contadorDiv.appendChild(mulheresIcon);
+            contadorDiv.appendChild(mulherButtonContainer);
+            contadorDiv.appendChild(totalIcon);
+            contadorDiv.appendChild(resetButton);
+        }
+
+        function criarBotao(texto, sexo, quantidade) {
+            var botao = document.createElement("button");
+            botao.textContent = texto;
+            botao.onclick = function() {
+                atualizarPessoas(sexo, quantidade);
+            };
+            return botao;
+        }
 
         function atualizarPessoas(sexo, quantidade) {
             if (sexo === 'homens') {
-                if (homens + quantidade >= 0 && homens + quantidade <= totalPessoas) {
-                    homens += quantidade;
-                    mulheres -= quantidade;
-                }
+                homens += quantidade;
             } else {
-                if (mulheres + quantidade >= 0 && mulheres + quantidade <= totalPessoas) {
-                    mulheres += quantidade;
-                    homens -= quantidade;
-                }
+                mulheres += quantidade;
             }
 
+            totalPessoas += quantidade;
             atualizarIcones();
         }
 
         function atualizarIcones() {
-            document.getElementById("homens-icon").textContent = "♂️ Homens: " + homens;
-            document.getElementById("mulheres-icon").textContent = "♀️ Mulheres: " + mulheres;
+            var homensIcon = document.querySelector("#contador .icon:nth-of-type(1)");
+            var mulheresIcon = document.querySelector("#contador .icon:nth-of-type(3)");
+            var totalIcon = document.querySelector("#contador .icon:nth-of-type(5)");
+
+            homensIcon.textContent = "♂️ Homens: " + homens;
+            mulheresIcon.textContent = "♀️ Mulheres: " + mulheres;
+            totalIcon.textContent = "Total: " + totalPessoas;
         }
 
-        function atualizarTotal() {
-            var novoTotal = parseInt(prompt("Digite o novo número total de pessoas:"));
-            if (!isNaN(novoTotal) && novoTotal >= 0) {
-                totalPessoas = novoTotal;
-                homens = Math.min(homens, totalPessoas);
-                mulheres = totalPessoas - homens;
-                atualizarIcones();
-            } else {
-                alert("Por favor, digite um número válido.");
-            }
+        function resetarContador() {
+            totalPessoas = 0;
+            homens = 0;
+            mulheres = 0;
+            atualizarIcones();
         }
+
+        criarContador();
     </script>
 </body>
 </html>
